@@ -1,0 +1,68 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation-name: modal-fade-in;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+    overflow: auto; /* Добавьте эту строку для прокрутки модального окна */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* Уменьшите отступ сверху */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    opacity: 0;
+    animation-name: modal-fade-in;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #f00;
+}
+
+.button-container {
+    text-align: right;
+}
+
+.btn-green {
+    background-color: #0f0;
+    color: #fff;
+}
+
+.btn-red {
+    background-color: #f00;
+    color: #fff;
+}
+
+/* Анимация открытия модального окна */
+@keyframes modal-slide-up {
+    from {
+        transform: translateY(50px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

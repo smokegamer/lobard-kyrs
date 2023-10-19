@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ломбард</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link href="./assets/modal.css" rel="stylesheet">
     <style>
         .chart {
             width: 100%;
-            height: 10px;
+            height: 10px
             background-color: #a4a89e;
             position: relative;
             transition: width 1s ease-in-out;
@@ -34,7 +35,7 @@
             <li><a href="#" class="hover:text-green-500">Заявки</a></li>
             <li> <a href="#" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>
         </ul>
-        <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600">Создать заявку</a>
+        <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
     </div>
 </nav>
 
@@ -66,7 +67,7 @@
 
         <p class="text-gray-700 mt-4">Мы гордимся тем, что являемся лучшим ломбардом в мире, и всегда готовы помочь вам в решении ваших финансовых вопросов. Приходите к нам сегодня и убедитесь сами в нашей выдающейся службе:</p>
         <p class="text-gray-700 mt-4">Готовы предоставить займ под залог ваших ценных вещей всего от 0.27%  день.</p>
-
+        <p class="text-gray-700 mt-4 font-semibold">P.s. Личный кабинет автоматически заводится , при создании заявки , не забудьте записать ваш логин и пароль!</p>
     </div>
 
 
@@ -99,9 +100,74 @@
     </div>
 
 
+<!--// модальное окно-->
+
+    <div id="myModal" class="modal">
+        <div class="modal-content bg-white p-4 rounded shadow-lg max-w-md">
+            <span class="close absolute top-2 right-2 text-gray-600 cursor-pointer text-2xl" id="closeModal">×</span>
+            <form id="applicationForm" action="process_application.php" method="post" class="space-y-4">
+                <div class="space-y-2">
+                    <label for="full_name" class="text-gray-700 font-semibold">ФИО</label>
+                    <input type="text" id="full_name" name="full_name" required class="w-full border rounded p-2">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="passport_number" class="text-gray-700 font-semibold">Номер паспорта</label>
+                    <input type="text" id="passport_number" name="passport_number" required class="w-full border rounded p-2">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="division_code" class="text-gray-700 font-semibold">Код подразделения</label>
+                    <input type="text" id="division_code" name="division_code" required class="w-full border rounded p-2">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="registration_address" class="text-gray-700 font-semibold">Адрес регистрации</label>
+                    <input type="text" id="registration_address" name="registration_address" required class="w-full border rounded p-2">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="category" class="text-gray-700 font-semibold">Категория техники</label>
+                    <select id="category" name="category" class="w-full border rounded p-2">
+                        <option>Телефоны/смартфоны</option>
+                        <option>Техника для дачи</option>
+                        <option>Техника для дома</option>
+                        <option>Техника для ремонта</option>
+                        <option>ПК/Ноутбуки/Оборудование</option>
+                        <option>Товары для спорта</option>
+                        <option>Часы и прочее</option>
+                        <option>Другое*</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="product_name" class="text-gray-700 font-semibold">Наименование и модель</label>
+                    <input type="text" id="product_name" name="product_name" required class="w-full border rounded p-2">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="selling_price" class="text-gray-700 font-semibold">Планируемая цена продажи</label>
+                    <input type="number" id="selling_price" name="selling_price" required class="w-full border rounded p-2">
+                </div>
+                <div class="text-gray-700">руб.</div>
+
+                <div class="button-container space-x-4 mt-4">
+                    <input type="submit" class="btn-green-500 py-2 px-4 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer" value="Отправить">
+                    <button class="btn-red py-2 px-4 rounded-full bg-red-500 hover:bg-red-600 text-white cursor-pointer" id="closeModal">Закрыть</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
 
 
 <script src="./modules/typewriter.js"></script>
+    <script src="./modules/modal.js"></script>
+
 <script>
     const chartElements = document.querySelectorAll('.chart');
 
