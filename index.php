@@ -30,9 +30,9 @@
 <nav class="bg-gray-800 text-white py-4">
     <div class="container mx-auto flex justify-between items-center">
         <ul class="flex space-x-6">
-            <li><a href="#" class="hover:text-green-500">Главная</a></li>
+            <li><a href="/" class="hover:text-green-500">Главная</a></li>
             <li><a href="#" class="hover:text-green-500">Документы</a></li>
-            <li><a href="#" class="hover:text-green-500">Заявки</a></li>
+            <li><a href="zayavka.php" class="hover:text-green-500">Заявки</a></li>
             <li> <a href="#" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>
         </ul>
         <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
