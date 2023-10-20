@@ -106,6 +106,7 @@
         <div class="modal-content bg-white p-4 rounded shadow-lg max-w-md">
             <span class="close absolute top-2 right-2 text-gray-600 cursor-pointer text-2xl" id="closeModal">×</span>
             <form id="applicationForm" action="process_application.php" method="post" class="space-y-4">
+
                 <div class="space-y-2">
                     <label for="full_name" class="text-gray-700 font-semibold">ФИО</label>
                     <input type="text" id="full_name" name="full_name" required class="w-full border rounded p-2">
@@ -153,9 +154,9 @@
 
                 <div class="button-container space-x-4 mt-4">
                     <input type="submit" class="btn-green-500 py-2 px-4 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer" value="Отправить">
-                    <button class="btn-red py-2 px-4 rounded-full bg-red-500 hover:bg-red-600 text-white cursor-pointer" id="closeModal">Закрыть</button>
-
+                    <button class="btn-red py-2 px-4 rounded-full bg-red-500 hover:bg-red-600 text-white cursor-pointer" id="closeModalForm">Закрыть</button>
                 </div>
+                <div id="message" class="bg-blue-100 p-4 rounded border border-blue-300 " style="display: none;"></div>
             </form>
         </div>
     </div>
@@ -165,8 +166,13 @@
 
 
 
-<script src="./modules/typewriter.js"></script>
+
+
+
+    <script src="./modules/typewriter.js"></script>
     <script src="./modules/modal.js"></script>
+
+
 
 <script>
     const chartElements = document.querySelectorAll('.chart');
