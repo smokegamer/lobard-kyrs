@@ -1,9 +1,15 @@
+<?php
+include("./modules/session.php"); // Подключаем session.php
+
+
+?>
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="assets/tailwind.css" rel="stylesheet">
     <title>Заявки</title>
 </head>
 <body>
@@ -12,12 +18,21 @@
         <ul class="flex space-x-6">
             <li><a href="/" class="hover:text-green-500">Главная</a></li>
             <li><a href="#" class="hover:text-green-500">Документы</a></li>
-            <li><a href="zayavka.php" class="hover:text-green-500">Заявки</a></li>
-            <li><a href="login.php" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>
+            <li><a href="./zayavka.php" class="hover:text-green-500">Заявки</a></li>
+            <?php
+            if (isUserAuthenticated()) {
+                // Отображение кнопки "Выход"
+                echo '<li><a href="./logout.php" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Выйти</a></li>';
+            } else {
+                // Отображение кнопки "Личный кабинет" для неаутентифицированных пользователей
+                echo '<li><a href="./login.php" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>';
+            }
+            ?>
         </ul>
         <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
     </div>
 </nav>
+
 
 <div class="container mx-auto mt-8">
     <h1 class="text-3xl font-semibold mb-4">Просмотр заявки</h1>

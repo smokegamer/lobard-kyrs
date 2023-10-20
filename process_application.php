@@ -1,4 +1,7 @@
 <?php
+
+include("./modules/session.php"); // Подключаем session.php
+
 include("config.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

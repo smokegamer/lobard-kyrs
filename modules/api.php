@@ -1,4 +1,6 @@
 <?php
+include("./session.php"); // Подключаем session.php
+
 include("../config.php");
 
 // Функция для получения информации о заявке по номеру
@@ -17,44 +19,51 @@ function getApplicationByNumber($conn, $applicationNumber) {
 if (isset($_GET["applicationNumber"])) {
     $applicationNumber = $_GET["applicationNumber"];
 
-    // Поиск заявки по номеру
-    $application = getApplicationByNumber($conn, $applicationNumber);
+    // Проверка аутентификации пользователя
+    if (isUserAuthenticated()) {
+        // Поиск заявки по номеру
+        $application = getApplicationByNumber($conn, $applicationNumber);
 
-    if ($application) {
-        // Успешно найдено
-        $status = $application["status"];
-        $statusColor = "";
+        if ($application) {
+            // Успешно найдено
+            $status = $application["status"];
+            $statusColor = "";
 
-        if ($status == "Обработка") {
-            $statusColor = "bg-blue-500";
-        } elseif ($status == "Отклонено") {
-            $statusColor = "bg-red-500";
-        } elseif ($status == "Одобрено") {
-            $statusColor = "bg-green-500";
+            if ($status == "Обработка") {
+                $statusColor = "bg-blue-500";
+            } elseif ($status == "Отклонено") {
+                $statusColor = "bg-red-500";
+            } elseif ($status == "Одобрено") {
+                $statusColor = "bg-green-500";
+            }
+
+            // Формирование ответа в формате JSON
+            $response = [
+                "id" => $application["id"],
+                "full_name" => $application["full_name"],
+                "passport_number" => $application["passport_number"],
+                "division_code" => $application["division_code"],
+                "registration_address" => $application["registration_address"],
+                "category" => $application["category"],
+                "product_name" => $application["product_name"],
+                "selling_price" => $application["selling_price"],
+                "application_number" => $application["application_number"],
+                "status" => $status,
+                "statusColor" => $statusColor
+            ];
+
+            // Отправка ответа в формате JSON
+            header("Content-Type: application/json");
+            echo json_encode($response);
+        } else {
+            // Заявка не найдена
+            header("HTTP/1.1 404 Not Found");
+            echo json_encode(["error" => "Заявка не найдена"]);
         }
-
-        // Формирование ответа в формате JSON
-        $response = [
-            "id" => $application["id"],
-            "full_name" => $application["full_name"],
-            "passport_number" => $application["passport_number"],
-            "division_code" => $application["division_code"],
-            "registration_address" => $application["registration_address"],
-            "category" => $application["category"],
-            "product_name" => $application["product_name"],
-            "selling_price" => $application["selling_price"],
-            "application_number" => $application["application_number"],
-            "status" => $status,
-            "statusColor" => $statusColor
-        ];
-
-        // Отправка ответа в формате JSON
-        header("Content-Type: application/json");
-        echo json_encode($response);
     } else {
-        // Заявка не найдена
-        header("HTTP/1.1 404 Not Found");
-        echo json_encode(["error" => "Заявка не найдена"]);
+        // Пользователь не аутентифицирован - выполните необходимые действия
+        header("HTTP/1.1 401 Unauthorized");
+        echo json_encode(["error" => "Пользователь не аутентифицирован"]);
     }
 } else {
     // Номер заявки не указан

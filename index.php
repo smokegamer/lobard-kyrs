@@ -1,10 +1,14 @@
+<?php
+include("./modules/session.php"); // Подключаем session.php
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ломбард</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link href="assets/tailwind.css" rel="stylesheet">
     <link href="./assets/modal.css" rel="stylesheet">
     <style>
         .chart {
@@ -33,11 +37,19 @@
             <li><a href="/" class="hover:text-green-500">Главная</a></li>
             <li><a href="#" class="hover:text-green-500">Документы</a></li>
             <li><a href="zayavka.php" class="hover:text-green-500">Заявки</a></li>
-            <li> <a href="login.php" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>
+            <?php
+            if (isUserAuthenticated()) { // Проверка аутентификации пользователя
+                echo '<li><a href="logout.php" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Выход</a></li>';
+            } else {
+                echo '<li><a href="login.php" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>';
+            }
+            ?>
         </ul>
         <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
     </div>
 </nav>
+
+
 
 <!-- Основная информация о ломбарде -->
 <div class="container mx-auto mt-8 flex">
