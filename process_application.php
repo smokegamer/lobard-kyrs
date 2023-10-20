@@ -1,11 +1,14 @@
 <?php
 
 include("./modules/session.php"); // Подключаем session.php
-
 include("config.php");
 
+$application_number = null;
+$login = null;
+$password = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // значения модаьльного окна
+    // значения модального окна
     $full_name = $_POST["full_name"];
     $passport_number = $_POST["passport_number"];
     $division_code = $_POST["division_code"];
@@ -45,23 +48,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Закрываем подготовленное выражение для учетной записи
     $userStmt->close();
 
-    // Отправка номера заявки, логина и пароля на клиентскую сторону для отображения
+    function generateRandomPassword($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+        $charLength = strlen($characters);
 
-}
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, $charLength - 1)];
+        }
 
-function generateRandomPassword($length) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $password = '';
-    $charLength = strlen($characters);
-
-    for ($i = 0; $i < $length; $i++) {
-        $password .= $characters[rand(0, $charLength - 1)];
+        return $password;
     }
-
-    return $password;
-    header("Location: index.php");
-
 }
+
+// Формирование JSON-ответа
 $responseData = array(
     'application_number' => $application_number,
     'login' => $login,
@@ -71,5 +71,4 @@ $responseData = array(
 // Отправьте данные в формате JSON
 header('Content-Type: application/json');
 echo json_encode($responseData);
-
 ?>

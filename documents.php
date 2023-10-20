@@ -27,7 +27,7 @@ include("./modules/session.php"); // Подключаем session.php
             }
             ?>
         </ul>
-        <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
+<!--        <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>-->
     </div>
 </nav>
 
