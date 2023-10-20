@@ -35,7 +35,7 @@ include("./modules/session.php"); // Подключаем session.php
     <div class="container mx-auto flex justify-between items-center">
         <ul class="flex space-x-6">
             <li><a href="/" class="hover:text-green-500">Главная</a></li>
-            <li><a href="#" class="hover:text-green-500">Документы</a></li>
+            <li><a href="documents.php" class="hover:text-green-500">Документы</a></li>
             <li><a href="zayavka.php" class="hover:text-green-500">Заявки</a></li>
             <?php
             if (isUserAuthenticated()) { // Проверка аутентификации пользователя
@@ -109,6 +109,11 @@ include("./modules/session.php"); // Подключаем session.php
 
         </ul>
         <p class="mt-4">Краткая информация о процессе получения займа в ломбарде.</p>
+        <br>
+        <br>
+        <p class="text-center text-gray-700">
+            Вся представленная на этой странице информация является вымышленной и используется исключительно в демонстрационных целях. Никакие реальные данные или события не связаны с этим контентом.
+        </p>
     </div>
 
 
@@ -200,5 +205,6 @@ include("./modules/session.php"); // Подключаем session.php
     });
 
 </script>
+
 </body>
 </html>
