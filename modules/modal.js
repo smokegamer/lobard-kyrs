@@ -58,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const password = data.password;
 
                 // Выводим сообщение пользователю
-                messageDiv.innerHTML = `Ваша заявка успешно отправлена. Номер заявки: ${applicationNumber}, логин: ${login}, пароль: ${password} Скопируйте эти данные и запишите их!`;
+                messageDiv.innerHTML = `Ваша заявка успешно отправлена. Номер заявки: <strong>${applicationNumber}</strong><br>Скопируйте номер заявки или запишите!`;
+
                 messageDiv.style.display = "block";
 
             })

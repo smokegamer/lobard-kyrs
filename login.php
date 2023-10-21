@@ -1,6 +1,3 @@
-<?php
-include("./modules/session.php"); // Подключаем session.php
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +23,38 @@ include("./modules/session.php"); // Подключаем session.php
         <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">
             Войти
         </button>
+
+        <button id="registrationButton" class="mt-4 bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-500 focus:outline-none focus:ring focus:ring-red-200">
+            Зарегистрироваться
+        </button>
     </form>
+
+    <div id="registrationForm" class="hidden mt-4">
+        <h2 class="text-2xl font-semibold mb-4">Регистрация</h2>
+        <form action="./modules/register.php" method="POST">
+            <div class="mb-4">
+                <label for="newUsername" class="block text-gray-700 font-semibold">Создайте логин:</label>
+                <input type="text" id="newUsername" name="newUsername" class="w-full border rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-500" required>
+            </div>
+            <div class="mb-4">
+                <label for="newPassword" class="block text-gray-700 font-semibold">Придумайте пароль:</label>
+                <input type="password" id="newPassword" name="newPassword" class="w-full border rounded py-2 px-3 focus:outline-none focus:ring focus:border-blue-500" required>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">
+                Создать аккаунт
+            </button>
+        </form>
+    </div>
 </div>
+
+<script>
+    const registrationButton = document.getElementById('registrationButton');
+    const registrationForm = document.getElementById('registrationForm');
+
+    registrationButton.addEventListener('click', () => {
+        registrationForm.classList.remove('hidden');
+    });
+</script>
+
 </body>
 </html>
