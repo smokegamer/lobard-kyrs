@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 <div class="bg-white p-8 rounded-lg shadow-lg w-1/4">
-    <h1 class="text-2xl font-semibold mb-4">Вход в личный кабинет</h1>
+    <h1 id="loginTitle" class="text-2xl font-semibold mb-4">Вход в личный кабинет</h1>
     <form action="modules/enter.php" method="POST">
 
         <div class="mb-4">
@@ -50,9 +50,13 @@
 <script>
     const registrationButton = document.getElementById('registrationButton');
     const registrationForm = document.getElementById('registrationForm');
+    const loginTitle = document.getElementById('loginTitle');
+    const loginForm = document.querySelector('form[action="modules/enter.php"]');
 
     registrationButton.addEventListener('click', () => {
-        registrationForm.classList.remove('hidden');
+        loginForm.style.display = 'none';
+        loginTitle.style.display = 'none';
+        registrationForm.style.display = 'block';
     });
 </script>
 

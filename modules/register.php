@@ -1,5 +1,5 @@
 <?php
-include("./modules/session.php"); // Подключаем session.php
+include("session.php"); // Подключаем session.php
 include("config.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,17 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Пользователь с таким логином уже существует
         $response = array('message' => 'Пользователь с таким логином уже существует.');
     } else {
-        // Вставка новой записи в таблицу users без хеширования пароля
+        // Вставка новой записи в таблицу users
         $sql = "INSERT INTO users (login, password, admin_level) VALUES (?, ?, 0)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $newUsername, $newPassword);
+        $stmt->bind_param("ss", $newUsername, $newPassword); // Сохраняем пароль как текстовую строку
 
         if ($stmt->execute()) {
             // Регистрация успешно завершена
             $response = array('message' => 'Регистрация успешно завершена. Вы можете войти.');
-            // После успешной регистрации, выполните переадресацию на страницу login.php
             header('Location: ../login.php');
-            exit; // Обязательно завершите выполнение скрипта после переадресации
+            exit; //
         } else {
             // Ошибка при регистрации
             $response = array('message' => 'Ошибка при регистрации. Пожалуйста, попробуйте ещё раз.');

@@ -24,11 +24,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
     }
+    // Добавление обработки удаления заявок
+    if (isset($_POST['delete_application_id'])) {
+        $delete_application_id = $_POST['delete_application_id'];
+
+        // Удаление заявки из базы данных
+        $sql = "DELETE FROM applications WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $delete_application_id);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 // Получение всех заявок пользователя из базы данных
-$sql = "SELECT * FROM applications WHERE status = 'Обработка'";
-$result = $conn->query($sql);
+$statusFilter = isset($_GET['statusFilter']) ? $_GET['statusFilter'] : 'Обработка'; // Получаем выбранный статус из фильтра
+
+$sql = "SELECT * FROM applications WHERE status = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $statusFilter);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
 
 // Отображение HTML
 ?>
@@ -61,7 +79,16 @@ $result = $conn->query($sql);
 
 <div class="container mx-auto mt-8">
     <h1 class="text-3xl font-semibold mb-4">Заявки</h1>
-
+    <form method="get"> <!-- Форма для фильтрации -->
+        <div class="mb-4">
+            <label for="statusFilter" class="block text-sm font-medium text-gray-700">Фильтр по статусу:</label>
+            <select id="statusFilter" name="statusFilter" class="bg-white border border-gray-300 rounded-lg py-2 px-4 focus:outline-none" onchange="this.form.submit()">
+                <option value="Обработка">Обработка</option>
+                <option value="Одобрено">Одобрено</option>
+                <option value="Отклонено">Отклонено</option>
+            </select>
+        </div>
+    </form>
     <table class="min-w-full divide-y divide-gray-300">
         <thead>
         <tr>
@@ -90,6 +117,7 @@ $result = $conn->query($sql);
                 echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["product_name"] . "</td>";
                 echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["selling_price"] . "</td>";
                 echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["application_number"] . "</td>";
+                // Добавление столбца "Действия" с кнопкой "Удалить"
                 echo '<td class="border px-4 py-2">';
                 echo '<form method="post" action="alogin.php">';
                 echo '<input type="hidden" name="application_id" value="' . $row['id'] . '">';
@@ -99,6 +127,10 @@ $result = $conn->query($sql);
                 echo '<option value="Отклонено">Отклонено</option>';
                 echo '</select>';
                 echo '<button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">Сохранить</button>';
+                echo '</form>';
+                echo '<form method="post" action="alogin.php">';
+                echo '<input type="hidden" name="delete_application_id" value="' . $row['id'] . '">';
+                echo '<button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600">Удалить</button>';
                 echo '</form>';
                 echo '</td>';
                 echo '</tr>';
