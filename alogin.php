@@ -62,23 +62,34 @@ $result = $conn->query($sql);
 <div class="container mx-auto mt-8">
     <h1 class="text-3xl font-semibold mb-4">Заявки</h1>
 
-    <table class="table-auto w-full">
+    <table class="min-w-full divide-y divide-gray-300">
         <thead>
         <tr>
-            <th class="px-4 py-2">ID</th>
-            <th class="px-4 py-2">ФИО</th>
-            <th class="px-4 py-2">Статус</th>
-            <th class="px-4 py-2">Действия</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Паспортные данные</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Код-подразделения</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес регистрации</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Категория товара</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Наименование (марка и модель)</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Моя цена</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Номер заявки</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="bg-white divide-y divide-gray-300">
         <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo '<tr>';
-                echo '<td class="border px-4 py-2">' . $row['id'] . '</td>';
-                echo '<td class="border px-4 py-2">' . $row['full_name'] . '</td>';
-                echo '<td class="border px-4 py-2">' . $row['status'] . '</td>';
+
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["full_name"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["passport_number"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["division_code"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["registration_address"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["category"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["product_name"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["selling_price"] . "</td>";
+                echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["application_number"] . "</td>";
                 echo '<td class="border px-4 py-2">';
                 echo '<form method="post" action="alogin.php">';
                 echo '<input type="hidden" name="application_id" value="' . $row['id'] . '">';

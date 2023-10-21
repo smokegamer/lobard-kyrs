@@ -1,6 +1,52 @@
 <?php
 include("./modules/session.php"); // Подключаем session.php
 
+// Проверяем, авторизован ли пользователь
+if (!isUserAuthenticated()) {
+    // Если пользователь не авторизован, перенаправляем его на страницу авторизации
+    header("Location: login.php");
+    exit;
+}
+// Получите `username` (логин) из сессии
+$username = getUsername();
+
+// Получите `user_id` на основе логина пользователя
+$user_id = getUserIdFromUsername1($username);
+
+// Получаем user_id из сессии (предполагая, что оно там сохранено)
+
+
+// Подключаемся к базе данных (замените данными вашей БД)
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "lombard";
+
+// Создаем соединение
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Проверяем соединение на ошибки
+if ($conn->connect_error) {
+    die("Ошибка подключения: " . $conn->connect_error);
+}
+
+// Формируем SQL-запрос для получения заявок текущего пользователя
+$sql = "SELECT * FROM applications WHERE user_id = $user_id";
+$result = $conn->query($sql);
+
+
+function getUserIdFromUsername1($username) {
+    global $conn;
+    $sql = "SELECT id FROM users WHERE login = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        return $row['id'];
+    }
+    return false; // Если не удалось найти `user_id`
+}
 
 ?>
 <!DOCTYPE html>
@@ -47,32 +93,58 @@ include("./modules/session.php"); // Подключаем session.php
         <input id="searchInput" type="text" class="w-2/3 border border-gray-300 rounded-l-lg py-2 px-4 focus:outline-none" placeholder="Номер заявки">
         <button id="searchButton" class="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600">Поиск</button>
     </div>
-<!--Если заявка не найдена-->
-    <div id="infoBlock" class="hidden bg-red-500 text-white p-2 rounded mt-4">
-        Заявка не найдена
-    </div>
-    <!-- Карточка для отображения информации о заявке -->
-    <div id="infoCard" class="mt-8 hidden">
-        <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
-            <!-- Ваши данные о заявке, пример: -->
-            <div class="flex-shrink-0">
-                <!-- Ваша иконка или изображение (при необходимости) -->
-            </div>
-            <div>
-                <div class="text-xl font-medium text-black" id="appNumber">Заявка №</div>
-                <p class="text-gray-500">ID: <span id="appID"></span></p>
-                <p class="text-gray-500">ФИО: <span id="appFullName"></span></p>
-                <p class="text-gray-500">Номер паспорта: <span id="appPassportNumber"></span></p>
-                <p class="text-gray-500">Код подразделения: <span id="appDivisionCode"></span></p>
-                <p class="text-gray-500">Адрес регистрации: <span id="appRegistrationAddress"></span></p>
-                <p class="text-gray-500">Категория техники: <span id="appCategory"></span></p>
-                <p class="text-gray-500">Наименование и модель: <span id="appProductName"></span></p>
-                <p class="text-gray-500">Планируемая цена продажи: <span id="appSellingPrice"></span> руб.</p>
-                <!-- Статус -->
-                <p class="text-xl font-medium" id="appStatus"></p>
-            </div>
+    <br>
+    <br>
+    <?php if ($result->num_rows == 0) : ?>
+        <div id="infoBlock" class="bg-red-500 text-white p-2 rounded mt-4">
+            У вас пока нет заявок.
         </div>
-    </div>
+    <?php else : ?>
+        <!-- Таблица для отображения заявок -->
+    <table class="min-w-full divide-y divide-gray-300">
+        <thead>
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Паспортные данные</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Код-подразделения</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Адрес регистрации</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Категория товара</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Наименование (марка и модель)</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Моя цена</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Номер заявки</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-300">
+        <?php
+        // Выводим заявки в виде таблицы
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["full_name"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["passport_number"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["division_code"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["registration_address"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["category"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["product_name"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["selling_price"] . "</td>";
+            echo "<td class='px-6 py-4 whitespace-nowrap'>" . $row["application_number"] . "</td>";
+            // Окраска фона столбца статуса
+            $statusClass = '';
+            if ($row["status"] === "Одобрено") {
+                $statusClass = 'bg-green-200 text-green-800';
+            } elseif ($row["status"] === "Отклонено") {
+                $statusClass = 'bg-red-200 text-red-800';
+            } elseif ($row["status"] === "Обработка") {
+                $statusClass = 'bg-blue-200 text-blue-800';
+            }
+
+            echo "<td class='px-6 py-4 whitespace-nowrap $statusClass'>" . $row["status"] . "</td>";
+            echo "</tr>";
+        }
+        ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
 
     <script>
         const searchButton = document.getElementById('searchButton');

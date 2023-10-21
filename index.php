@@ -32,7 +32,7 @@ include("./modules/session.php"); // Подключаем session.php
 
 <!-- Навигация -->
 <nav class="bg-gray-800 text-white py-4">
-    <div class="container mx-auto flex justify-between items-center">
+    <li class="container mx-auto flex justify-between items-center">
         <ul class="flex space-x-6">
             <li><a href="/" class="hover:text-green-500">Главная</a></li>
             <li><a href="documents.php" class="hover:text-green-500">Документы</a></li>
@@ -40,12 +40,13 @@ include("./modules/session.php"); // Подключаем session.php
             <?php
             if (isUserAuthenticated()) { // Проверка аутентификации пользователя
                 echo '<li><a href="logout.php" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Выход</a></li>';
+                echo ' <li></li><a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a></li> ' ;
             } else {
                 echo '<li><a href="login.php" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600">Личный кабинет</a></li>';
             }
             ?>
         </ul>
-        <a href="#" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600" id="openModal">Создать заявку</a>
+
     </div>
 </nav>
 
